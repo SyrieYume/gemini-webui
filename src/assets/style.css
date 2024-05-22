@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: url("./cursor/Normal.cur"), auto;          
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+#app {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+button,.button {
+    display: inline-flex;
+    border: none;
+    outline: none;
+    background: none;
+    align-items: center;
+    border-radius: 15px;
+    padding: 10px;
+    white-space: pre;
+    cursor: url("./cursor/Link.cur"), auto;
+}
+
+b {
+    color:#555861;
+}
+
+p {
+    cursor: url("./cursor/TextSelectionNoBordered.cur"), auto;
+}
+
+button > *, .button > * {
+    cursor: url("./cursor/Link.cur"), auto;
+}
+
+button:hover, .button:hover {
+    background-color: #80808020;
+    transition: .5s all ease;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #ffffff00;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(252,198,188);
+    border-radius: 3px;
+    cursor: url("./cursor/Link.cur"), auto;
+}
+
+textarea {
+    cursor: url("./cursor/TextSelectionBordered.cur"), auto;
+}
