@@ -54,7 +54,7 @@ async function setConfig(newConfig){
 
 
 
-await loadConfig()
+loadConfig().then()
 
 export default {
     config,
