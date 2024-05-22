@@ -1,20 +1,21 @@
 <script setup>
-import default_avatar from "../assets/icons/default_avatar.jpg"
-import gemini_sparkle from "../assets/icons/gemini_sparkle.svg"
-import { onMounted,reactive } from "vue"
+import { onMounted, ref } from "vue"
+import Common from "./Common.vue";
 
 const props = defineProps({
     sender: String,
-    content: String
+    content: String,
+    tokenUsage: Number,
+    maxTokens: Number
 })
 
-let avatarSrc = reactive(gemini_sparkle)
+let avatarSrc = ref("")
 
 onMounted(()=>{
     if(props.sender == "user")
-        avatarSrc = default_avatar
+        avatarSrc.value = Common.config.avatar
     else
-        avatarSrc = gemini_sparkle
+        avatarSrc.value = "icons/gemini_sparkle.svg"
 })
 
 </script>

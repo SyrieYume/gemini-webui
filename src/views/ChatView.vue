@@ -21,12 +21,13 @@ onMounted(()=>{
 
 <div id="chatView">
     <div id="chatContents">
+        <Message sender="model" content="Hello, What can I do for you?"></Message>
         <Message sender="user" content="test content"></Message>
     </div>
 
     <div id="messageInput">
         <textarea id="inputBox" v-model="inputText" ref="inputBox" placeholder="Enter Text" rows="1" cols="27"></textarea>
-        <button><img src="../assets/icons/send.svg"></button>
+        <button><img src="/public/icons/send.svg"></button>
     </div>
 
 </div>
@@ -62,7 +63,6 @@ onMounted(()=>{
     box-sizing: border-box;
     word-wrap: break-word;
     font-size: 1.1rem;
-    color: #383A3F;
     background: none;
     border: none;
     outline: none;
@@ -74,10 +74,6 @@ onMounted(()=>{
     width: 80%;
     overflow-y: auto;
     scroll-behavior: smooth;
-    scrollbar-face-color: rgba(100,100,100,0.4);
-    scrollbar-arrow-color:rgba(100,100,100,0);
-    scrollbar-shadow-color: rgba(100,100,100,0.1);
-    scrollbar-track-color: rgba(100,100,100,0.1);
 }
 
 </style>

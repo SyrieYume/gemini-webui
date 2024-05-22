@@ -1,6 +1,6 @@
 <template>
 <div id="sidebar">
-    <button id="menuBtn"><img src="../assets/icons/menu.svg"></button><br/>
+    <button id="menuBtn"><img src="/public/icons/menu.svg"></button><br/>
 
     <b style="margin-left: 10px;">Historys</b>
 
@@ -9,8 +9,8 @@
     </div>
 
     <router-link to="/">
-        <button id="newChatBtn">
-            <img src="../assets/icons/add.svg" style="width: 24px;margin-right: 10px;">
+        <button id="newChatBtn" class="primary fullwidth">
+            <img src="/public/icons/add.svg" style="width: 24px;margin-right: 10px;">
             <b>New Chat</b>
         </button>
     </router-link>
@@ -18,8 +18,8 @@
     <br/>
 
     <router-link to="/settings">
-        <button id="settingsBtn">
-            <img src="../assets/icons/settings.svg" style="width: 24px;margin-right: 10px;">
+        <button id="settingsBtn" class="fullwidth">
+            <img src="/public/icons/settings.svg" style="width: 24px;margin-right: 10px;">
             <b>Settings</b>
         </button>
     </router-link>
@@ -36,7 +36,7 @@
     flex-direction: column;
     flex-grow: 0;
     width: 18%;
-    min-width: 50px;
+    min-width: 250px;
     height: 100%;
     padding: 15px;
     box-sizing: border-box;
@@ -49,12 +49,4 @@
     justify-content: center;
 }
 
-#newChatBtn {
-    background-color: rgb(252,198,188);
-    width: 100%;
-}
-
-#settingsBtn {
-    width: 100%;
-}
 </style>

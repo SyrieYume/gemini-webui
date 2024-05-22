@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: url("./cursor/Normal.cur"), auto;          
+    cursor: url("/public/icons/cursor/Normal.cur"), auto;
+    transition: all .7s ease;    
 }
 
 body {
@@ -25,7 +26,8 @@ button,.button {
     border-radius: 15px;
     padding: 10px;
     white-space: pre;
-    cursor: url("./cursor/Link.cur"), auto;
+    font-size: .9rem;
+    cursor: url("/public/icons/cursor/Link.cur"), auto;
 }
 
 b {
@@ -33,11 +35,11 @@ b {
 }
 
 p {
-    cursor: url("./cursor/TextSelectionNoBordered.cur"), auto;
+    cursor: url("/public/icons/cursor/TextSelectionNoBordered.cur"), auto;
 }
 
 button > *, .button > * {
-    cursor: url("./cursor/Link.cur"), auto;
+    cursor: url("/public/icons/cursor/Link.cur"), auto;
 }
 
 button:hover, .button:hover {
@@ -45,17 +47,27 @@ button:hover, .button:hover {
     transition: .5s all ease;
 }
 
+.fullwidth {
+    width: 100%;
+}
+
+button.primary, .button.primary {
+    background-color: rgb(252,198,188);
+}
+
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
+    height: 4px;
     background-color: #ffffff00;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: rgb(252,198,188);
     border-radius: 3px;
-    cursor: url("./cursor/Link.cur"), auto;
+    cursor: url("/public/icons/cursor/Link.cur"), auto;
 }
 
-textarea {
-    cursor: url("./cursor/TextSelectionBordered.cur"), auto;
+textarea, input[type="text"] {
+    color: #383A3F;
+    cursor: url("/public/icons/cursor/TextSelectionBordered.cur"), auto;
 }
