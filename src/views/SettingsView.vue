@@ -85,6 +85,12 @@ async function saveNewConfig(){
       <p class="tip">关闭后，需要等整个回答生成完毕才能收到回复。</p>
     </div>
 
+    <div class="column">
+      <b>Markdown: &nbsp;</b><input type="checkbox" v-model="settings.markdown">
+      <br/>
+      <p class="tip">使用markdown渲染输出结果。</p>
+    </div>
+
     <button class="primary" @click="saveNewConfig" style="margin: 10px; padding: 10px 20px;"><b>保存</b></button>
 </div>
 

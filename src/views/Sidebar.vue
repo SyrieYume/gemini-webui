@@ -9,7 +9,7 @@
     </div>
 
     <router-link to="/">
-        <button id="newChatBtn" class="primary fullwidth">
+        <button id="newChatBtn" class="primary fullwidth" @click="Common.triggerEvent('onNewChat')">
             <img src="/public/icons/add.svg" style="width: 24px;margin-right: 10px;">
             <b>New Chat</b>
         </button>
@@ -27,18 +27,18 @@
 </template>
 
 <script setup>
-
+import Common from '../components/Common.vue';
 </script>
 
 <style scoped>
 #sidebar {
     display: flex;
     flex-direction: column;
-    flex-grow: 0;
     width: 18%;
     min-width: 250px;
     height: 100%;
     padding: 15px;
+    padding-bottom: 40px;
     box-sizing: border-box;
     background-color: rgb(252,233,218);
 }

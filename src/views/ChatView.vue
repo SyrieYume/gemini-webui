@@ -1,9 +1,25 @@
 <script setup>
-import { onMounted, watch, ref } from 'vue';
+import { onMounted, watch, ref, reactive } from 'vue';
 import Message from '../components/Message.vue';
+import Gemini from '../components/Gemini.vue';
+import Common from '../components/Common.vue';
 
 const inputText = ref("")
 let inputBox
+
+const messages = reactive([])
+
+async function sendMessage(){
+    messages.push({
+        role: "user",
+        parts: [{text: inputText.value}]
+    })
+    inputText.value = ""
+    setTimeout(()=>{ inputBox.style.height = 'auto';inputBox.style.height = inputBox.scrollHeight + 'px' },30)
+
+    const res = await Gemini.post(messages)
+    messages.push(res.msg)
+}
 
 // inputBox根据文本行数自动调整高度
 watch(inputText, () => {
@@ -15,19 +31,20 @@ onMounted(()=>{
     inputBox = document.getElementById("inputBox")
 })
 
+Common.bindEvent("onNewChat", ()=>{ messages.splice(0,messages.length) })
 </script>
 
 <template>
 
 <div id="chatView">
     <div id="chatContents">
-        <Message sender="model" content="Hello, What can I do for you?"></Message>
-        <Message sender="user" content="test content"></Message>
+        <Message sender="model" :content="[{text: 'Hello, What can I do for you?'}]"></Message>
+        <Message v-for="msg,i in messages" :sender="msg.role" :content="msg.parts" :key="i"></Message>
     </div>
 
     <div id="messageInput">
-        <textarea id="inputBox" v-model="inputText" ref="inputBox" placeholder="Enter Text" rows="1" cols="27"></textarea>
-        <button><img src="/public/icons/send.svg"></button>
+        <textarea id="inputBox" v-model="inputText" ref="inputBox" @keydown.enter.ctrl.prevent="sendMessage" placeholder="Enter Text" rows="1" cols="27"></textarea>
+        <button @click="sendMessage"><img src="/public/icons/send.svg"></button>
     </div>
 
 </div>
@@ -36,7 +53,7 @@ onMounted(()=>{
 <style>
 #chatView {
     display: flex;
-    flex-grow: 1;
+    flex: 1;
     flex-shrink: 0;
     flex-direction: column;
     height: 100%;
@@ -70,8 +87,11 @@ onMounted(()=>{
 }
 
 #chatContents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     flex: 1;
-    width: 80%;
+    width: 100%;
     overflow-y: auto;
     scroll-behavior: smooth;
 }

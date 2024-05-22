@@ -13,7 +13,8 @@ const config = reactive({
     temperature: 1,
     topP: 0.95,
     topK: 64,
-    stream: false
+    stream: false,
+    markdown: false
 })
 
 async function loadConfig(){
@@ -52,7 +53,9 @@ async function setConfig(newConfig){
     await saveConfig()
 }
 
-
+const events = {}
+function bindEvent(eventName, callback){ events[eventName] = callback }
+function triggerEvent(eventName){ events[eventName]() }
 
 loadConfig().then()
 
@@ -61,6 +64,8 @@ export default {
     loadConfig,
     saveConfig,
     setConfig,
+    bindEvent,
+    triggerEvent,
     name: "Common"
 }
 

@@ -1,37 +1,37 @@
 <script setup>
-import { onMounted, ref } from "vue"
+import { computed, onMounted, ref } from "vue"
 import Common from "./Common.vue";
+import { marked } from "marked";
 
 const props = defineProps({
     sender: String,
-    content: String,
-    tokenUsage: Number,
-    maxTokens: Number
+    content: Array,
 })
 
-let avatarSrc = ref("")
-
-onMounted(()=>{
-    if(props.sender == "user")
-        avatarSrc.value = Common.config.avatar
-    else
-        avatarSrc.value = "icons/gemini_sparkle.svg"
+const displayContent = computed(() => {
+    const text = props.content.map((part)=>{ return part.text }).join("").trim()
+    if(Common.config.markdown)
+        return marked(text)
+    else 
+        return text
 })
+
 
 </script>
 
 <template>
 <div class="message">
-    <img class="avatar" :src="avatarSrc"/>
-    <p class="content">{{ content }}</p>
+    <img class="avatar" :src="sender=='user'?Common.config.avatar:'icons/gemini_sparkle.svg'"/>
+    <p class="content foldContent" v-html="displayContent"></p>
 </div>
 </template>
 
 <style scoped>
 .message {
     display: flex;
+    width: 80%;
     align-items: flex-start;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .message > .avatar {
@@ -42,11 +42,32 @@ onMounted(()=>{
 }
 
 .message > .content {
+    flex: 1;
     margin: 12px 5px 12px 20px;
-    font-size: 1.2rem;
-    white-space: pre;
+    padding: 2px;
+    font-size: 1rem;
+    white-space: pre-wrap;
     box-sizing: border-box;
     color: #555861;
+    font-family: "宋体";
+    font-weight: 500;
+    
 }
 
+.message:hover {
+    background-color: rgb(252,198,188,0.4);
+    
+}
+
+.foldContent {
+    display:-webkit-box;
+    -webkit-line-clamp:10;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.foldContent:hover {
+    -webkit-line-clamp:999;
+}
 </style>

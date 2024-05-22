@@ -12,6 +12,7 @@
     "axios": "^1.7.1",
     "cropperjs": "^1.6.2",
     "idb-keyval": "^6.2.1",
+    "marked": "^12.0.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"
   },

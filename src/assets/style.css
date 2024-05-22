@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     cursor: url("/public/icons/cursor/Normal.cur"), auto;
-    transition: all .7s ease;    
+    transition: all .7s ease;
 }
 
 body {
