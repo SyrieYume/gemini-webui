@@ -5,12 +5,16 @@
     <b style="margin-left: 10px;">Historys</b>
 
     <div id="historys">
-        <div v-for="history in historysList" 
+        <div v-for="history,i in historysList" 
             @click="Common.triggerEventAsync('onLoadHistory', history.id)" 
             :class="['button','fullwidth', currentHistory == history.id?'primary':'']" :key="history.id" style="justify-content: space-between;">
             
             <p>{{ history.name }}</p>
-            <img @click.stop="deleteHistory(history.id)" src="/public/icons/delete.svg"/>
+            <div>
+                <img @click.stop="editedHistory = i" src="/public/icons/edit.svg" style="padding-right: 5px;"/>
+                <img @click.stop="deleteHistory(history.id)" src="/public/icons/delete.svg"/>
+            </div>
+            
         </div>
     </div>
 
@@ -39,11 +43,25 @@
         </button>
     </router-link>
 </div>
+<PopupEditor v-if="editedHistory>=0" 
+    title="编辑名称" 
+    :initContent="historysList[editedHistory].name" 
+    :onSave="(newName) => renameHistory(historysList[editedHistory].id,newName)" 
+    :onDismiss="()=>{editedHistory = -1}" />
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import Common from '../components/Common.vue'
-import { historysList, saveHistory, deleteHistory, currentHistory} from "../components/History.vue"
+import PopupEditor from '../components/popupEditor.vue';
+import { historysList, saveHistory, deleteHistory, currentHistory, renameHistory} from "../components/History.vue"
+
+const editedHistory = ref(-1)
+
+async function startRenameHistory(i){
+
+}
+
 </script>
 
 <style scoped>

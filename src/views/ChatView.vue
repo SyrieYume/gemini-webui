@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, watch, ref, reactive } from 'vue';
 import Message from '../components/Message.vue';
+import PopupEditor from "../components/popupEditor.vue"
 import Gemini from '../components/Gemini.vue';
 import Common from '../components/Common.vue';
 import { loadHistory,currentHistory } from '../components/History.vue';
@@ -9,6 +10,17 @@ const inputText = ref("")
 let inputBox
 const messages = reactive([])
 const tokenUsage = ref(0)
+
+const editedMsg = ref(-1)
+
+const startEditMsg = (i) => {
+    const text = messages[i].parts.map((part)=>{ return part.text }).join("").trim()
+    messages[i].parts = [{text}]
+    editedMsg.value = i
+}
+const saveEditMsg = (content) => {
+    messages[editedMsg.value].parts[0].text = content
+}
 
 async function sendMessage(){
     messages.push({
@@ -43,7 +55,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
     const historyData = await loadHistory(id)
     if(historyData){
         messages.splice(0, messages.length)
-        historyData.messages.forEach((msg) => { messages.push(msg) })
+        historyData.messages.forEach((msg)=>{messages.push(msg)})
         tokenUsage.value = historyData.tokenUsage
         currentHistory.value = id
     }
@@ -55,14 +67,22 @@ Common.bindEvent("onLoadHistory", async (id) => {
 <div id="chatView">
     <div id="chatContents">
         <Message :msg='{role: "model", parts: [{text: "Hello, What can I do for you?"}]}'></Message>
-        <Message v-for="msg,i in messages" :msg="msg" :onDelete="()=>{messages.splice(i,1)}" :key="i"></Message>
+        <Message v-for="msg,i in messages" 
+            :msg = "msg" 
+            :onDelete = "() => {messages.splice(i,1)}" 
+            :onEdit = "() => { startEditMsg(i) }" 
+            :key = "i"/>
     </div>
 
     <div id="messageInput">
         <textarea id="inputBox" v-model="inputText" ref="inputBox" @keydown.enter.ctrl.prevent="sendMessage" placeholder="Enter Text" rows="1" cols="27"></textarea>
         <button @click="sendMessage"><img src="/public/icons/send.svg"></button>
     </div>
-
+    <PopupEditor v-if="editedMsg>=0" 
+        title="编辑内容" 
+        :initContent="messages[editedMsg].parts[0].text" 
+        :onSave="content => {messages[editedMsg].parts[0].text = content}" 
+        :onDismiss="()=>{editedMsg = -1}"/>
 </div>
 </template>
 

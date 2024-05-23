@@ -67,7 +67,10 @@ export default {
 </div>
 </template>
 
-<style>
+<style scoped>
+* {
+  transition: none;
+}
 
 .image {
   height:80px;

@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from "vue"
 import Common from "./Common.vue";
 import { marked } from "marked";
 
-const props = defineProps(["msg", "onDelete"])
+const props = defineProps(["msg", "onDelete", "onEdit"])
 
 const text = ref("")
 
@@ -23,8 +23,8 @@ const displayContent = computed(() => {
     <img class="avatar" :src="msg.role=='user'?Common.config.avatar:'icons/gemini_sparkle.svg'"/>
     <p class="content foldContent" v-html="displayContent"></p>
     <div class="tools">
-        <img src="/public/icons/copy.svg" />
-        <img src="/public/icons/edit.svg" />
+        <img src="/public/icons/copy.svg" @click="window.navigator.clipboard.writeText(text)" />
+        <img src="/public/icons/edit.svg" @click="onEdit()" />
         <img src="/public/icons/delete.svg" @click="onDelete()" />
     </div>
 </div>
@@ -67,9 +67,9 @@ const displayContent = computed(() => {
 .message > .tools {
     display: none;
     position: absolute;
-    flex-direction: column;
-    top: 0;
-    left: 100%;
+    flex-direction: row;
+    bottom: 0;
+    right: 0;
     margin: 0px;
     padding: 4px;
 }
@@ -100,7 +100,7 @@ const displayContent = computed(() => {
     text-overflow: ellipsis;
 }
 
-.foldContent:hover {
+.message:hover > .foldContent {
     -webkit-line-clamp:999;
 }
 </style>

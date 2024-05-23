@@ -28,6 +28,14 @@ async function saveHistory(historyData){
     console.log("saveHistory", currentHistory.value, historysList, historyData)
 }
 
+async function renameHistory(id, newName){
+    const index = historysList.findIndex((history) => history.id == id)
+    if(index < 0) return
+    historysList[index].name = newName
+    await set("historysList", JSON.stringify(historysList))
+
+}
+
 async function loadHistory(id){
     let data = await get(id)
     if(data)
@@ -52,7 +60,8 @@ export {
     currentHistory,
     saveHistory,
     loadHistory,
-    deleteHistory
+    deleteHistory,
+    renameHistory
 }
 
 </script>
