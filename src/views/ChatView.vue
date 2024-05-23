@@ -3,7 +3,7 @@ import { onMounted, watch, ref, reactive } from 'vue';
 import Message from '../components/Message.vue';
 import Gemini from '../components/Gemini.vue';
 import Common from '../components/Common.vue';
-import { loadHistory } from '../components/History.vue';
+import { loadHistory,currentHistory } from '../components/History.vue';
 
 const inputText = ref("")
 let inputBox
@@ -33,7 +33,11 @@ onMounted(()=>{
     inputBox = document.getElementById("inputBox")
 })
 
-Common.bindEvent("onNewChat", ()=>{ messages.splice(0,messages.length) })
+Common.bindEvent("onNewChat", ()=>{ 
+    messages.splice(0,messages.length)
+    tokenUsage.value = 0 
+    currentHistory.value = ""
+})
 Common.bindEvent("getMsgs", () => { return { messages, tokenUsage:tokenUsage.value } })
 Common.bindEvent("onLoadHistory", async (id) => {
     const historyData = await loadHistory(id)
@@ -41,6 +45,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
         messages.splice(0, messages.length)
         historyData.messages.forEach((msg) => { messages.push(msg) })
         tokenUsage.value = historyData.tokenUsage
+        currentHistory.value = id
     }
 })
 </script>
@@ -50,7 +55,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
 <div id="chatView">
     <div id="chatContents">
         <Message :msg='{role: "model", parts: [{text: "Hello, What can I do for you?"}]}'></Message>
-        <Message v-for="msg,i in messages" :msg="msg" :key="i"></Message>
+        <Message v-for="msg,i in messages" :msg="msg" :onDelete="()=>{messages.splice(i,1)}" :key="i"></Message>
     </div>
 
     <div id="messageInput">

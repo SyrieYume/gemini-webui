@@ -5,15 +5,18 @@
     <b style="margin-left: 10px;">Historys</b>
 
     <div id="historys">
-        <div class="button sidebarBtn fullwidth" v-for="history in historysList" @click="Common.triggerEventAsync('onLoadHistory', history.id)" :key="history.id" style="justify-content: space-between;">
+        <div v-for="history in historysList" 
+            @click="Common.triggerEventAsync('onLoadHistory', history.id)" 
+            :class="['button','fullwidth', currentHistory == history.id?'primary':'']" :key="history.id" style="justify-content: space-between;">
+            
             <p>{{ history.name }}</p>
-            <img @click="deleteHistory(history.id)" src="/public/icons/delete.svg"/>
+            <img @click.stop="deleteHistory(history.id)" src="/public/icons/delete.svg"/>
         </div>
     </div>
 
     <br/>
 
-    <button class="sidebarBtn fullwidth" @click="newHistory(Common.triggerEvent('getMsgs'))">
+    <button class="sidebarBtn fullwidth" @click="saveHistory(Common.triggerEvent('getMsgs'))">
         <img src="/public/icons/save.svg">
         <b>Save Hstory</b>
     </button>
@@ -40,7 +43,7 @@
 
 <script setup>
 import Common from '../components/Common.vue'
-import { historysList, newHistory, deleteHistory} from "../components/History.vue"
+import { historysList, saveHistory, deleteHistory, currentHistory} from "../components/History.vue"
 </script>
 
 <style scoped>
@@ -75,6 +78,10 @@ import { historysList, newHistory, deleteHistory} from "../components/History.vu
     padding: 5px 5px 5px 20px;
     overflow-y: auto;
     scroll-behavior: smooth;
+}
+
+#historys > div {
+    margin-bottom: 4px;
 }
 
 </style>

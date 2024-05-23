@@ -1,8 +1,9 @@
 <script>
 import { set,get,del } from 'idb-keyval';
-import { reactive } from 'vue';
+import { reactive,ref,watch } from 'vue';
 
-let historysList = reactive([])
+const historysList = reactive([])
+const currentHistory = ref("")
 
 async function loadHistorysList(){
     const listStr = await get("historysList")
@@ -13,15 +14,18 @@ async function loadHistorysList(){
 
 }
 
-async function newHistory(historyData){
-    const id = `his-${Date.now().toString(16)}`
-    historysList.push({
-        id,
-        name: id
-    })
-    await set(id, JSON.stringify(historyData))
+async function saveHistory(historyData){
+    if(currentHistory.value == ""){
+        currentHistory.value  = `his-${Date.now().toString(16)}`
+        historysList.push({
+            id: currentHistory.value,
+            name: currentHistory.value
+        })
+    }
+    
+    await set(currentHistory.value, JSON.stringify(historyData))
     await set("historysList", JSON.stringify(historysList))
-    console.log("newHistory", id, historysList, historyData)
+    console.log("saveHistory", currentHistory.value, historysList, historyData)
 }
 
 async function loadHistory(id){
@@ -33,16 +37,20 @@ async function loadHistory(id){
 }
 
 async function deleteHistory(id){
-    historysList.splice(historysList.indexOf(id), 1)
+    historysList.splice(historysList.findIndex((history) => history.id == id), 1)
     del(id)
     await set("historysList", JSON.stringify(historysList))
+    if(currentHistory.value == id)
+        currentHistory.value = ""
+    console.log("delHistory", id)
 }
 
 loadHistorysList().then()
 
 export {
     historysList,
-    newHistory,
+    currentHistory,
+    saveHistory,
     loadHistory,
     deleteHistory
 }

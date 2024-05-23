@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from "vue"
 import Common from "./Common.vue";
 import { marked } from "marked";
 
-const props = defineProps(["msg"])
+const props = defineProps(["msg", "onDelete"])
 
 const text = ref("")
 
@@ -25,7 +25,7 @@ const displayContent = computed(() => {
     <div class="tools">
         <img src="/public/icons/copy.svg" />
         <img src="/public/icons/edit.svg" />
-        <img src="/public/icons/delete.svg" />
+        <img src="/public/icons/delete.svg" @click="onDelete()" />
     </div>
 </div>
 </template>
