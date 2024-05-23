@@ -55,7 +55,8 @@ async function setConfig(newConfig){
 
 const events = {}
 function bindEvent(eventName, callback){ events[eventName] = callback }
-function triggerEvent(eventName){ events[eventName]() }
+function triggerEvent(eventName, ...params){ return events[eventName](params) }
+async function triggerEventAsync(eventName, ...params){ return await events[eventName](...params) }
 
 loadConfig().then()
 
@@ -66,6 +67,7 @@ export default {
     setConfig,
     bindEvent,
     triggerEvent,
+    triggerEventAsync,
     name: "Common"
 }
 

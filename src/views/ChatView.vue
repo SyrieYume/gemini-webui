@@ -3,11 +3,12 @@ import { onMounted, watch, ref, reactive } from 'vue';
 import Message from '../components/Message.vue';
 import Gemini from '../components/Gemini.vue';
 import Common from '../components/Common.vue';
+import { loadHistory } from '../components/History.vue';
 
 const inputText = ref("")
 let inputBox
-
 const messages = reactive([])
+const tokenUsage = ref(0)
 
 async function sendMessage(){
     messages.push({
@@ -19,6 +20,7 @@ async function sendMessage(){
 
     const res = await Gemini.post(messages)
     messages.push(res.msg)
+    tokenUsage.value = res.tokenUsage
 }
 
 // inputBox根据文本行数自动调整高度
@@ -32,14 +34,23 @@ onMounted(()=>{
 })
 
 Common.bindEvent("onNewChat", ()=>{ messages.splice(0,messages.length) })
+Common.bindEvent("getMsgs", () => { return { messages, tokenUsage:tokenUsage.value } })
+Common.bindEvent("onLoadHistory", async (id) => {
+    const historyData = await loadHistory(id)
+    if(historyData){
+        messages.splice(0, messages.length)
+        historyData.messages.forEach((msg) => { messages.push(msg) })
+        tokenUsage.value = historyData.tokenUsage
+    }
+})
 </script>
 
 <template>
 
 <div id="chatView">
     <div id="chatContents">
-        <Message sender="model" :content="[{text: 'Hello, What can I do for you?'}]"></Message>
-        <Message v-for="msg,i in messages" :sender="msg.role" :content="msg.parts" :key="i"></Message>
+        <Message :msg='{role: "model", parts: [{text: "Hello, What can I do for you?"}]}'></Message>
+        <Message v-for="msg,i in messages" :msg="msg" :key="i"></Message>
     </div>
 
     <div id="messageInput">

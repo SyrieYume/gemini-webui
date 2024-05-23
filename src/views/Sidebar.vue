@@ -4,13 +4,25 @@
 
     <b style="margin-left: 10px;">Historys</b>
 
-    <div id="historys" style="flex:1;">
-
+    <div id="historys">
+        <div class="button sidebarBtn fullwidth" v-for="history in historysList" @click="Common.triggerEventAsync('onLoadHistory', history.id)" :key="history.id" style="justify-content: space-between;">
+            <p>{{ history.name }}</p>
+            <img @click="deleteHistory(history.id)" src="/public/icons/delete.svg"/>
+        </div>
     </div>
 
+    <br/>
+
+    <button class="sidebarBtn fullwidth" @click="newHistory(Common.triggerEvent('getMsgs'))">
+        <img src="/public/icons/save.svg">
+        <b>Save Hstory</b>
+    </button>
+
+    <br/>
+
     <router-link to="/">
-        <button id="newChatBtn" class="primary fullwidth" @click="Common.triggerEvent('onNewChat')">
-            <img src="/public/icons/add.svg" style="width: 24px;margin-right: 10px;">
+        <button class="sidebarBtn primary fullwidth" @click="Common.triggerEvent('onNewChat')">
+            <img src="/public/icons/add.svg">
             <b>New Chat</b>
         </button>
     </router-link>
@@ -18,8 +30,8 @@
     <br/>
 
     <router-link to="/settings">
-        <button id="settingsBtn" class="fullwidth">
-            <img src="/public/icons/settings.svg" style="width: 24px;margin-right: 10px;">
+        <button class="sidebarBtn fullwidth">
+            <img src="/public/icons/settings.svg">
             <b>Settings</b>
         </button>
     </router-link>
@@ -27,7 +39,8 @@
 </template>
 
 <script setup>
-import Common from '../components/Common.vue';
+import Common from '../components/Common.vue'
+import { historysList, newHistory, deleteHistory} from "../components/History.vue"
 </script>
 
 <style scoped>
@@ -47,6 +60,21 @@ import Common from '../components/Common.vue';
     width: 50px;
     height: 50px;
     justify-content: center;
+}
+
+.sidebarBtn > img {
+    width: 24px;
+    margin-right: 10px;
+}
+
+#historys {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    padding: 5px 5px 5px 20px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
 </style>
