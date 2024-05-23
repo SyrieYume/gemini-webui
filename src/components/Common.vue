@@ -14,7 +14,8 @@ const config = reactive({
     topP: 0.95,
     topK: 64,
     stream: false,
-    markdown: false
+    markdown: false,
+    foldContent: 0
 })
 
 async function loadConfig(){

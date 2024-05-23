@@ -18,6 +18,7 @@ const content = ref(props.initContent??"")
 
 <style>
 .popupEditor {
+    z-index: 9999;
     display: flex;
     position: fixed;
     padding: 10px;
@@ -45,5 +46,9 @@ const content = ref(props.initContent??"")
     border: 2px dashed #ED9282;
     resize: none;
     outline: none;
+}
+
+@media screen and (max-width:500px){
+    .popupEditor {min-width: 75vw;}
 }
 </style>

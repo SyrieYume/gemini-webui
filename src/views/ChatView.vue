@@ -132,4 +132,9 @@ Common.bindEvent("onLoadHistory", async (id) => {
     scroll-behavior: smooth;
 }
 
+@media screen and (max-width:500px){
+    #messageInput {width: 100%;}
+    #chatView {padding-top: 60px;}
+}
+
 </style>

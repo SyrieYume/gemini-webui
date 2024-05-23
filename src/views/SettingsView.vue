@@ -91,6 +91,12 @@ async function saveNewConfig(){
       <p class="tip">使用markdown渲染输出结果。</p>
     </div>
 
+    <div class="column">
+      <b>内容折叠: </b><br/>
+      <p class="tip">当对话内容的行数超过该值时，折叠内容，设置为0则不折叠。</p>
+      <input class="input" type="number" step="1" min="0" max="999" v-model="settings.foldContent"/>
+    </div>
+
     <button class="primary" @click="saveNewConfig" style="margin: 10px; padding: 10px 20px;"><b>保存</b></button>
 </div>
 
@@ -199,6 +205,10 @@ async function saveNewConfig(){
 
 .model-maxTokens > b {
     color: rgb(208, 140, 128);
+}
+
+@media screen and (max-width:500px){
+    #settingsView{ padding-top: 65px;}
 }
 
 </style>

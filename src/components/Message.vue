@@ -21,9 +21,9 @@ const displayContent = computed(() => {
 <template>
 <div class="message">
     <img class="avatar" :src="msg.role=='user'?Common.config.avatar:'icons/gemini_sparkle.svg'"/>
-    <p class="content foldContent" v-html="displayContent"></p>
+    <p class="content foldContent" :style="{'-webkit-line-clamp': Common.config.foldContent>0?Common.config.foldContent:999}" v-html="displayContent"></p>
     <div class="tools">
-        <img src="/public/icons/copy.svg" @click="window.navigator.clipboard.writeText(text)" />
+        <img src="/public/icons/copy.svg" />
         <img src="/public/icons/edit.svg" @click="onEdit()" />
         <img src="/public/icons/delete.svg" @click="onDelete()" />
     </div>
@@ -101,6 +101,11 @@ const displayContent = computed(() => {
 }
 
 .message:hover > .foldContent {
-    -webkit-line-clamp:999;
+    -webkit-line-clamp:999 !important;
+}
+
+@media screen and (max-width:500px){
+    .message{ width: 100%; }
+    .message > .content { margin: 5px; }
 }
 </style>

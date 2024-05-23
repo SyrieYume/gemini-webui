@@ -1,8 +1,21 @@
 <template>
-<div id="sidebar">
-    <button id="menuBtn"><img src="/public/icons/menu.svg"></button><br/>
+<PopupEditor v-if="editedHistory>=0" 
+    title="编辑名称" 
+    :initContent="historysList[editedHistory].name" 
+    :onSave="(newName) => renameHistory(historysList[editedHistory].id,newName)" 
+    :onDismiss="()=>{editedHistory = -1}" />
 
+<button id="menuBtn" @click="switchSidebarShow()">
+    <img src="/public/icons/menu.svg">
+</button>
+
+<br/>   
+
+<div id="sidebar" ref="sidebar">
+    
     <b style="margin-left: 10px;">Historys</b>
+
+    <br/>
 
     <div id="historys">
         <div v-for="history,i in historysList" 
@@ -43,43 +56,51 @@
         </button>
     </router-link>
 </div>
-<PopupEditor v-if="editedHistory>=0" 
-    title="编辑名称" 
-    :initContent="historysList[editedHistory].name" 
-    :onSave="(newName) => renameHistory(historysList[editedHistory].id,newName)" 
-    :onDismiss="()=>{editedHistory = -1}" />
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Common from '../components/Common.vue'
 import PopupEditor from '../components/popupEditor.vue';
 import { historysList, saveHistory, deleteHistory, currentHistory, renameHistory} from "../components/History.vue"
 
 const editedHistory = ref(-1)
+let sidebar
 
-async function startRenameHistory(i){
-
+function switchSidebarShow(){
+    const display = sidebar.style.display
+    sidebar.style.display = (display == "flex")?"none":"flex"
 }
+
+onMounted(()=>{
+    sidebar = document.getElementById("sidebar")
+})
 
 </script>
 
 <style scoped>
 #sidebar {
+    z-index: 9997;
     display: flex;
     flex-direction: column;
     width: 18%;
     min-width: 250px;
     height: 100%;
     padding: 15px;
+    padding-top: 65px;
     padding-bottom: 40px;
     box-sizing: border-box;
     background-color: rgb(252,233,218);
 }
 
 #menuBtn {
+    z-index: 9998;
+    position: fixed;
     width: 50px;
     height: 50px;
+    left: 0;
+    top: 0;
+    margin: 5px;
     justify-content: center;
 }
 
@@ -100,6 +121,13 @@ async function startRenameHistory(i){
 
 #historys > div {
     margin-bottom: 4px;
+}
+
+@media screen and (max-width:500px){
+    #sidebar {
+        display: none;
+        position: absolute;
+    }
 }
 
 </style>
