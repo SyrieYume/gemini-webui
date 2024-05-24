@@ -93,8 +93,8 @@ async function saveNewConfig(){
 
     <div class="column">
       <b>内容折叠: </b><br/>
-      <p class="tip">当对话内容的行数超过该值时，折叠内容，设置为0则不折叠。</p>
-      <input class="input" type="number" step="1" min="0" max="999" v-model="settings.foldContent"/>
+      <p class="tip">当对话内容的高度（单位：px）超过该值时，折叠内容，设置为0则不折叠。</p>
+      <input class="input" type="number" step="10" min="-1" v-model="settings.foldHeight"/>
     </div>
 
     <button class="primary" @click="saveNewConfig" style="margin: 10px; padding: 10px 20px;"><b>保存</b></button>

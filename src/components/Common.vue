@@ -15,13 +15,13 @@ const config = reactive({
     topK: 64,
     stream: false,
     markdown: false,
-    foldContent: 0
+    foldHeight: 400
 })
 
 async function loadConfig(){
     for(let key in config){
         let value = await get(key)
-        if(value){
+        if(value != undefined){
             if(typeof config[key] == "object")
                 config[key] = JSON.parse(value)
             else

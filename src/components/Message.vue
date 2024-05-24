@@ -6,6 +6,7 @@ import { markedHighlight } from "marked-highlight"
 import hljs from 'highlight.js'
 import "highlight.js/styles/github.css";
 
+const { config } = Common
 const props = defineProps(["msg", "onDelete", "onEdit"])
 
 const text = ref("")
@@ -23,42 +24,62 @@ marked.setOptions({
     renderer: new marked.Renderer(),
     gfm: true,
     tables: true,
-    breaks: false,
+    breaks: true,
     pedantic: false,
     smartLists: true,
     sanitize: true,
-    smartypants: false
+    smartypants: true
 })
 
 const displayContent = computed(() => {
     text.value = props.msg.parts.map((part)=>{ return part.text }).join("").trim()
-    if(Common.config.markdown && props.msg.role == "model")
+    if(config.markdown && props.msg.role == "model")
         return marked.parse(text.value)
     else 
         return text.value
+})
+
+const contentRef = ref()
+const shouldFold = ref(false)
+const isFold = ref(false)
+
+function foldContent(){
+    isFold.value = shouldFold.value && !isFold.value
+}
+
+onMounted(()=>{
+    if(config.foldHeight > 0 && contentRef.value.getBoundingClientRect().height > config.foldHeight)
+        shouldFold.value = true
+    foldContent()
 })
 
 </script>
 
 <template>
 <div class="message">
-    <img class="avatar" :src="msg.role=='user'?Common.config.avatar:'icons/gemini_sparkle.svg'"/>
+    <img class="fold-more-icon button" @click="foldContent()" src="/public/icons/more.svg" v-if="isFold"/>
+    <img class="fold-more-icon button" @click="foldContent()" src="/public/icons/more.svg" v-else-if="shouldFold" style="transform: rotate(180deg);"/>
 
-    <div v-if="Common.config.markdown && msg.role=='model'" 
-        class="content foldContent markdown-body" 
-        :style="{'-webkit-line-clamp': Common.config.foldContent>0?Common.config.foldContent:999}" 
+    <img class="avatar" @click="foldContent()" :src="msg.role=='user'?config.avatar:'icons/gemini_sparkle.svg'"/>
+
+    <div v-if="config.markdown && msg.role=='model'" 
+        ref="contentRef"
+        :class="{'content':true,'markdown-body':true }" 
+        :style="{'max-height': isFold?`${config.foldHeight}px`:''}" 
         v-html="displayContent">
     </div>
 
-    <div v-else class="content foldContent" 
-        :style="{'-webkit-line-clamp': Common.config.foldContent>0?Common.config.foldContent:999}" 
+    <div v-else 
+        ref="contentRef"
+        :class="{ 'content':true }"
+        :style="{'max-height': isFold?`${config.foldHeight}px`:''}" 
         v-text="displayContent">
     </div>
 
     <div class="tools">
         <img src="/public/icons/copy.svg" />
-        <img src="/public/icons/edit.svg" @click="onEdit()" />
-        <img src="/public/icons/delete.svg" @click="onDelete()" />
+        <img src="/public/icons/edit.svg" @click.stop="onEdit()" />
+        <img src="/public/icons/delete.svg" @click.stop="onDelete()" />
     </div>
 </div>
 </template>
@@ -80,6 +101,10 @@ const displayContent = computed(() => {
 }
 
 .message > .content {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: auto;
+    text-overflow: ellipsis;
     flex: 1;
     margin: 12px 5px 12px 20px;
     padding: 2px;
@@ -94,7 +119,7 @@ const displayContent = computed(() => {
 }
 
 .message:hover {
-    background-color: rgb(252,198,188,0.4);
+    background-color: rgb(252,198,188,0.25);
     
 }
 
@@ -126,21 +151,23 @@ const displayContent = computed(() => {
     display: flex;
 }
 
-.foldContent {
-    display:-webkit-box;
-    -webkit-line-clamp:10;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.message:hover > .foldContent {
-    -webkit-line-clamp:999 !important;
-}
 
 .markdown-body {
     white-space: normal !important;
 }
+
+.fold-more-icon {
+    z-index: 100;
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.message:hover > .fold-more-icon {
+    display: block;
+}
+
 
 @media screen and (max-width:500px){
     .message{ width: 100%; }

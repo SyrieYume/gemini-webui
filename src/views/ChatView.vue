@@ -23,10 +23,11 @@ const saveEditMsg = (content) => {
 }
 
 async function sendMessage(){
-    messages.push({
-        role: "user",
-        parts: [{text: inputText.value}]
-    })
+    if(inputBox.value.trim() != "")
+        messages.push({
+            role: "user",
+            parts: [{text: inputText.value}]
+        })
     inputText.value = ""
     setTimeout(()=>{ inputBox.style.height = 'auto';inputBox.style.height = inputBox.scrollHeight + 'px' },30)
 
@@ -88,6 +89,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
     </div>
     <PopupEditor v-if="editedMsg>=0" 
         title="编辑内容" 
+        rows="20"
         :initContent="messages[editedMsg].parts[0].text" 
         :onSave="content => {messages[editedMsg].parts[0].text = content}" 
         :onDismiss="()=>{editedMsg = -1}"/>

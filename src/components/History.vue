@@ -38,7 +38,7 @@ async function renameHistory(id, newName){
 
 async function loadHistory(id){
     let data = await get(id)
-    if(data)
+    if(data != undefined)
         data = JSON.parse(data)
     console.log("loadHistory", id, data)
     return data
