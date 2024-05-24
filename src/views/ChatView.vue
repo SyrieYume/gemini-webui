@@ -76,7 +76,15 @@ Common.bindEvent("onLoadHistory", async (id) => {
 
     <div id="messageInput">
         <textarea id="inputBox" v-model="inputText" ref="inputBox" @keydown.enter.ctrl.prevent="sendMessage" placeholder="Enter Text" rows="1" cols="27"></textarea>
-        <button @click="sendMessage"><img src="/public/icons/send.svg"></button>
+        <div style="display: flex;justify-content: space-between;align-items: flex-end;">
+            <p style="font-size: 0.95rem;color: #444444C0">
+                token: 
+                <b style="color: rgb(202,148,138, 0.6)">{{ tokenUsage }}</b>
+                ({{ (tokenUsage/Common.config.maxTokens * 100).toFixed(2) }}%)
+            </p>
+            <button @click="sendMessage"><img src="/public/icons/send.svg"></button>
+        </div>
+        
     </div>
     <PopupEditor v-if="editedMsg>=0" 
         title="编辑内容" 
@@ -102,6 +110,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
 #messageInput {
     flex-shrink: 1;
     width:80%;
+    max-height: 500px;
     box-sizing: border-box;
     text-align: right;
     border-radius: 20px;
@@ -112,10 +121,12 @@ Common.bindEvent("onLoadHistory", async (id) => {
 #inputBox {
     width:100%;
     height: auto;
+    max-height: 400px;
     max-lines: 5;
     box-sizing: border-box;
     word-wrap: break-word;
     font-size: 1.1rem;
+    overflow-y: auto;
     background: none;
     border: none;
     outline: none;

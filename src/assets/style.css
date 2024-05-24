@@ -71,3 +71,10 @@ textarea, input[type="text"] {
     color: #383A3F;
     cursor: url("/public/icons/cursor/TextSelectionBordered.cur"), auto;
 }
+
+/* code {
+    background-color: #ffffffA0 !important;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+} */

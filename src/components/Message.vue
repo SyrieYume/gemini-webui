@@ -1,27 +1,60 @@
 <script setup>
 import { computed, onMounted, ref } from "vue"
 import Common from "./Common.vue";
-import { marked } from "marked";
+import {Marked} from 'marked';
+import { markedHighlight } from "marked-highlight"
+import hljs from 'highlight.js'
+import "highlight.js/styles/github.css";
 
 const props = defineProps(["msg", "onDelete", "onEdit"])
 
 const text = ref("")
 
+const marked = new Marked(
+    markedHighlight({
+        langPrefix: 'hljs language-',
+        highlight(code, language) {
+            return hljs.highlightAuto(code).value;
+        }
+    })
+)
+
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+    smartLists: true,
+    sanitize: true,
+    smartypants: false
+})
+
 const displayContent = computed(() => {
     text.value = props.msg.parts.map((part)=>{ return part.text }).join("").trim()
-    if(Common.config.markdown)
-        return marked(text.value)
+    if(Common.config.markdown && props.msg.role == "model")
+        return marked.parse(text.value)
     else 
         return text.value
 })
-
 
 </script>
 
 <template>
 <div class="message">
     <img class="avatar" :src="msg.role=='user'?Common.config.avatar:'icons/gemini_sparkle.svg'"/>
-    <p class="content foldContent" :style="{'-webkit-line-clamp': Common.config.foldContent>0?Common.config.foldContent:999}" v-html="displayContent"></p>
+
+    <div v-if="Common.config.markdown && msg.role=='model'" 
+        class="content foldContent markdown-body" 
+        :style="{'-webkit-line-clamp': Common.config.foldContent>0?Common.config.foldContent:999}" 
+        v-html="displayContent">
+    </div>
+
+    <div v-else class="content foldContent" 
+        :style="{'-webkit-line-clamp': Common.config.foldContent>0?Common.config.foldContent:999}" 
+        v-text="displayContent">
+    </div>
+
     <div class="tools">
         <img src="/public/icons/copy.svg" />
         <img src="/public/icons/edit.svg" @click="onEdit()" />
@@ -53,9 +86,10 @@ const displayContent = computed(() => {
     font-size: 1rem;
     white-space: pre-line;
     box-sizing: border-box;
-    color: #555861;
+    color: #313237;
     font-family: "宋体";
-    font-weight: 500;
+    font-weight: 550;
+    background: none;
     
 }
 
@@ -102,6 +136,10 @@ const displayContent = computed(() => {
 
 .message:hover > .foldContent {
     -webkit-line-clamp:999 !important;
+}
+
+.markdown-body {
+    white-space: normal !important;
 }
 
 @media screen and (max-width:500px){

@@ -114,13 +114,18 @@ onMounted(()=>{
     flex-direction: column;
     flex: 1;
     width: 100%;
-    padding: 5px 5px 5px 20px;
+    padding: 5px 5px 5px 10px;
     overflow-y: auto;
     scroll-behavior: smooth;
 }
 
 #historys > div {
     margin-bottom: 4px;
+}
+
+#historys > div > p {
+    color: #404040;
+    padding-left: 10px;
 }
 
 @media screen and (max-width:500px){
