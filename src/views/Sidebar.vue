@@ -9,9 +9,7 @@
     <img src="/public/icons/menu.svg">
 </button>
 
-<br/>   
-
-<div id="sidebar" ref="sidebar">
+<div id="sidebar">
     
     <b style="margin-left: 10px;">Historys</b>
 
@@ -83,7 +81,7 @@ onMounted(()=>{
     z-index: 9997;
     display: flex;
     flex-direction: column;
-    width: 18%;
+    width: 20vw;
     min-width: 250px;
     height: 100%;
     padding: 15px;
@@ -101,6 +99,7 @@ onMounted(()=>{
     left: 0;
     top: 0;
     margin: 5px;
+    box-sizing: border-box;
     justify-content: center;
 }
 

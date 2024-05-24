@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from "vue"
+import useClipboard from 'vue-clipboard3'
 import Common from "./Common.vue";
 import {Marked} from 'marked';
 import { markedHighlight } from "marked-highlight"
@@ -39,12 +40,16 @@ const displayContent = computed(() => {
         return text.value
 })
 
-const contentRef = ref()
+const contentRef = ref(null)
 const shouldFold = ref(false)
 const isFold = ref(false)
 
 function foldContent(){
     isFold.value = shouldFold.value && !isFold.value
+}
+
+function copyToClipboard(){
+    useClipboard().toClipboard(text.value)
 }
 
 onMounted(()=>{
@@ -77,7 +82,7 @@ onMounted(()=>{
     </div>
 
     <div class="tools">
-        <img src="/public/icons/copy.svg" />
+        <img src="/public/icons/copy.svg" @click.stop="copyToClipboard()" />
         <img src="/public/icons/edit.svg" @click.stop="onEdit()" />
         <img src="/public/icons/delete.svg" @click.stop="onDelete()" />
     </div>
@@ -86,26 +91,33 @@ onMounted(()=>{
 
 <style scoped>
 .message {
-    display: flex;
     position: relative;
     width: 80%;
     align-items: flex-start;
     margin-bottom: 20px;
+    padding-left: 37px;
 }
 
 .message > .avatar {
+    position: absolute;
     width: 32px;
     height: 32px;
+    left: 5px;
+    top: 5px;
     border-radius: 50%;
     margin: 5px;
 }
 
 .message > .content {
-    display: -webkit-box;
+    /* display: -webkit-box;
     -webkit-box-orient: vertical;
-    overflow: auto;
+    overflow-x: auto;
     text-overflow: ellipsis;
-    flex: 1;
+    flex: 1; */
+    display: block;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    max-width: 100%;
     margin: 12px 5px 12px 20px;
     padding: 2px;
     font-size: 1rem;

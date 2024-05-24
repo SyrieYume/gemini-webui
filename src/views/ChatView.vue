@@ -23,7 +23,7 @@ const saveEditMsg = (content) => {
 }
 
 async function sendMessage(){
-    if(inputBox.value.trim() != "")
+    if(inputText.value.trim() != "")
         messages.push({
             role: "user",
             parts: [{text: inputText.value}]
@@ -76,7 +76,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
     </div>
 
     <div id="messageInput">
-        <textarea id="inputBox" v-model="inputText" ref="inputBox" @keydown.enter.ctrl.prevent="sendMessage" placeholder="Enter Text" rows="1" cols="27"></textarea>
+        <textarea id="inputBox" v-model="inputText" @keydown.enter.ctrl.prevent="sendMessage" placeholder="Enter Text" rows="1" cols="27"></textarea>
         <div style="display: flex;justify-content: space-between;align-items: flex-end;">
             <p style="font-size: 0.95rem;color: #444444C0">
                 token: 
@@ -103,7 +103,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
     flex-shrink: 0;
     flex-direction: column;
     height: 100%;
-    padding: 20px;
+    padding: 20px 5px;
     box-sizing: border-box;
     align-items: center;
     background-color: rgb(254,244,238);
@@ -118,6 +118,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
     border-radius: 20px;
     padding:15px 15px 10px 15px;
     background-color: rgb(252,233,218);
+    box-shadow: 2px 1px 2px 4px rgb(252,198,188, 0.1);;
 }
 
 #inputBox {
@@ -143,10 +144,11 @@ Common.bindEvent("onLoadHistory", async (id) => {
     width: 100%;
     overflow-y: auto;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
 @media screen and (max-width:500px){
-    #messageInput {width: 100%;}
+    #messageInput {width: 95%;}
     #chatView {padding-top: 60px;}
 }
 

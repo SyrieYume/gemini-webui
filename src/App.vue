@@ -4,12 +4,11 @@ import Sidebar from './views/Sidebar.vue';
 
 <template>
 <Sidebar />
-
 <!-- 内容区域 -->
 <router-view v-slot="{ Component }">
 <!-- keep-alive 保持每个页面的状态不会因为路由变化而丢失 -->
 <keep-alive>
-    <component :is="Component" ref="routerComponent"/>
+    <component :is="Component"/>
 </keep-alive>
 </router-view>
 

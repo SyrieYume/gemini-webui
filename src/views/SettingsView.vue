@@ -75,8 +75,8 @@ async function saveNewConfig(){
 
     <div class="column">
       <b>创造性: </b><br/>
-      <p class="tip">0.0到1.0，值越高，生成的回答的多样性和创造性越高，但也会更不准确，更不可预测，通常选择0.5到1.0之间。</p>
-      <input class="input" type="number" step="0.1" min="0" max="1" v-model="settings.temperature"/>
+      <p class="tip">0.0到2.0，值越高，生成的回答的多样性和创造性越高，但也会更不准确，更不可预测，通常选择0.5到1.0之间。</p>
+      <input class="input" type="number" step="0.1" min="0" max="2" v-model="settings.temperature"/>
     </div>
 
     <div class="column">
