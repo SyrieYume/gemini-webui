@@ -22,7 +22,8 @@ const content = ref(props.initContent??"")
     display: flex;
     position: fixed;
     padding: 10px;
-    min-width: 40vw;
+    width: 40vw;
+    min-width: 500px;
     flex-direction: column;
     align-items: center;
     caret-color: #39c5bccc;

@@ -92,10 +92,10 @@ onMounted(()=>{
 <style scoped>
 .message {
     position: relative;
-    width: 80%;
+    width: 100%;
     align-items: flex-start;
-    margin-bottom: 20px;
-    padding-left: 37px;
+    padding: 5px 10px 20px 37px;
+    box-sizing: border-box;
 }
 
 .message > .avatar {
@@ -117,9 +117,10 @@ onMounted(()=>{
     display: block;
     overflow-y: auto;
     scroll-behavior: smooth;
-    max-width: 100%;
+    width: 100%;
     margin: 12px 5px 12px 20px;
     padding: 2px;
+    padding-right: 20px;
     font-size: 1rem;
     white-space: pre-line;
     box-sizing: border-box;
@@ -182,7 +183,8 @@ onMounted(()=>{
 
 
 @media screen and (max-width:500px){
-    .message{ width: 100%; }
-    .message > .content { margin: 5px; }
+    .message { width: 100%; }
+    .message > .content { margin: 5px 10px; padding-right: 5px; }
+    .message > .avatar { left: 0; top: 0;}
 }
 </style>

@@ -137,11 +137,14 @@ Common.bindEvent("onLoadHistory", async (id) => {
 }
 
 #chatContents {
-    display: flex;
+    display: block;
     flex-direction: column;
     align-items: center;
     flex: 1;
     width: 100%;
+    max-width: 100%;
+    padding: 0 10%;
+    padding-bottom: 20px;
     overflow-y: auto;
     scroll-behavior: smooth;
     box-sizing: border-box;
@@ -150,6 +153,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
 @media screen and (max-width:500px){
     #messageInput {width: 95%;}
     #chatView {padding-top: 60px;}
+    #chatContents { padding-left: 5px; padding-right: 5px;}
 }
 
 </style>
