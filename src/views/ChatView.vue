@@ -67,7 +67,7 @@ Common.bindEvent("onLoadHistory", async (id) => {
 
 <div id="chatView">
     <div id="chatContents">
-        <Message :msg='{role: "model", parts: [{text: "Hello, What can I do for you?"}]}'></Message>
+        <Message v-if="messages.length > 0" :msg='{role: "model", parts: [{text: "Hello, What can I do for you?"}]}'></Message>
         <Message v-for="msg,i in messages" 
             :msg = "msg" 
             :onDelete = "() => {messages.splice(i,1)}" 

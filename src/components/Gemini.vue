@@ -25,6 +25,7 @@ async function post(messages){
     const headers = {'Content-Type': 'application/json'}
     const data = {
         contents: messages,
+        temperature: Common.config.temperature,
         safetySettings: [
             {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
             {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
@@ -52,13 +53,17 @@ async function post(messages){
             tokenUsage: 0
         }
     }catch(error){
+        let errorText = ""
+        if("error" in res.data)
+            errorText = res.data.error.message
+        else 
+            errorText = error.toString()
         return {
-            msg: {parts: [{text: error.toString()}], role: "model"},
+            msg: {parts: [{text: errorText}], role: "model"},
             tokenUsage: 0
         }
     }
     
-
 }
 
 export default {
