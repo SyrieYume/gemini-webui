@@ -25,7 +25,9 @@ async function post(messages){
     const headers = {'Content-Type': 'application/json'}
     const data = {
         contents: messages,
-        temperature: Common.config.temperature,
+        generationConfig:{
+            temperature: Common.config.temperature
+        },
         safetySettings: [
             {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
             {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
@@ -36,6 +38,7 @@ async function post(messages){
 
     try {
         const res = await axios.post(url, data, {headers})
+        console.log("Gemini API res", res)
         if(res.status == 200){
             const candidate = res.data.candidates[0]
             if("content" in candidate)
